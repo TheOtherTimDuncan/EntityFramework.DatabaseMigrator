@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace EntityFramework.DatabaseMigrator
 {
-    public partial class DatabaseMigrator : Form
+    public partial class DatabaseMigrator : BaseDatabaseMigrator
     {
         public DatabaseMigrator()
         {
