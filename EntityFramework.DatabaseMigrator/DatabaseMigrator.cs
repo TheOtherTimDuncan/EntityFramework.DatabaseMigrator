@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace EntityFramework.DatabaseMigrator
 {
     public partial class DatabaseMigrator : BaseDatabaseMigrator
     {
-        private DbMigrator _currentMigrator;
+        private MigratorLoggingDecorator _currentMigrator;
         private string _currentMigratorTitle;
         private string _currentPending;
         private string _currentCompleted;
@@ -84,6 +85,18 @@ namespace EntityFramework.DatabaseMigrator
 
             OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentMigrator, _currentMigratorTitle, _currentPending));
 
+        }
+
+        private void btnMigrateSql_Click(object sender, EventArgs e)
+        {
+            txtLog.AppendText(Environment.NewLine);
+            txtLog.AppendText(GetMigrationSql(_currentMigrator, _currentPending));
+        }
+
+        private void btnRollbackSql_Click(object sender, EventArgs e)
+        {
+            txtLog.AppendText(Environment.NewLine);
+            txtLog.AppendText(GetMigrationSql(_currentMigrator, _currentCompleted));
         }
     }
 }

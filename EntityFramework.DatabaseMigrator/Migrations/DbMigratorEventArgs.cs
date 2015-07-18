@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
 
 namespace EntityFramework.DatabaseMigrator.Migrations
 {
@@ -8,13 +8,13 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class DbMigratorEventArgs : EventArgs
     {
-        public DbMigratorEventArgs(DbMigrator migrator, string migratorTitle)
+        public DbMigratorEventArgs(MigratorLoggingDecorator migrator, string migratorTitle)
         {
             this.Migrator = migrator;
             this.MigratorTitle = migratorTitle;
         }
 
-        public DbMigrator Migrator
+        public MigratorLoggingDecorator Migrator
         {
             get;
             private set;

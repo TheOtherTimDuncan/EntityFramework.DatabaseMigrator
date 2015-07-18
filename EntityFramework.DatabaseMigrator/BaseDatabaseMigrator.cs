@@ -17,7 +17,7 @@ namespace EntityFramework.DatabaseMigrator
 
         public BaseDatabaseMigrator()
         {
-            this.Migrators = new Dictionary<string, DbMigrator>();
+            this.Migrators = new Dictionary<string, MigratorLoggingDecorator>();
 
             Load += BaseDatabaseMigrator_Load;
         }
@@ -42,7 +42,7 @@ namespace EntityFramework.DatabaseMigrator
             set;
         }
 
-        public Dictionary<string, DbMigrator> Migrators
+        public Dictionary<string, MigratorLoggingDecorator> Migrators
         {
             get;
             private set;
@@ -93,13 +93,20 @@ namespace EntityFramework.DatabaseMigrator
                     logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
 
                     DbMigrator migrator = new DbMigrator(dbMigrationsConfiguration);
-                    Migrators.Add(migrationConfiguration.Title, migrator);
+                    Migrators.Add(migrationConfiguration.Title, new MigratorLoggingDecorator(migrator, logger));
                 }
             }
             else
             {
                 logger.WriteLine("No migration configurations found");
             }
+        }
+
+        protected string GetMigrationSql(MigratorLoggingDecorator migrator, string migrationName)
+        {
+            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(migrator);
+            string sql = loggingScripter.ScriptUpdate(null, migrationName);
+            return sql;
         }
     }
 }

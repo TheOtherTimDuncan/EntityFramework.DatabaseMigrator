@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
 
 namespace EntityFramework.DatabaseMigrator.Migrations
 {
@@ -8,7 +8,7 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class MigrationTargetChangedEventArgs : DbMigratorEventArgs
     {
-        public MigrationTargetChangedEventArgs(DbMigrator migrator, string migratorTitle)
+        public MigrationTargetChangedEventArgs(MigratorLoggingDecorator migrator, string migratorTitle)
             : base(migrator, migratorTitle)
         {
             PendingMigrations = migrator.GetPendingMigrations();
