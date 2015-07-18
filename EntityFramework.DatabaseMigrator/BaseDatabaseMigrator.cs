@@ -11,18 +11,23 @@ namespace EntityFramework.DatabaseMigrator
 {
     public class BaseDatabaseMigrator : Form
     {
-        public event EventHandler MigrationTargetChanged;
-        public event EventHandler PendingMigrationChanged;
-        public event EventHandler CompletedMigrationChanged;
+        public event DbMigratorEventHandler MigrationTargetChanged;
+        public event DbMigratorEventHandler PendingMigrationChanged;
+        public event DbMigratorEventHandler CompletedMigrationChanged;
 
         public BaseDatabaseMigrator()
         {
+            this.Migrators = new Dictionary<string, DbMigrator>();
+
             Load += BaseDatabaseMigrator_Load;
         }
 
         private void BaseDatabaseMigrator_Load(object sender, EventArgs e)
         {
-            Migrators = GetMigrators();
+            if (!DesignMode)
+            {
+                LoadMigrators();
+            }
         }
 
         public TextBox LoggerTextBox
@@ -31,13 +36,13 @@ namespace EntityFramework.DatabaseMigrator
             set;
         }
 
-        public IEnumerable<DbMigrator> Migrators
+        public Dictionary<string,DbMigrator> Migrators
         {
             get;
             private set;
         }
 
-        public virtual void OnMigrationTargetChanged(EventArgs e)
+        public virtual void OnMigrationTargetChanged(DbMigratorEventArgs e)
         {
             if (MigrationTargetChanged != null)
             {
@@ -45,7 +50,7 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        public virtual void OnPendingMigrationTargetChanged(EventArgs e)
+        public virtual void OnPendingMigrationTargetChanged(DbMigratorEventArgs e)
         {
             if (PendingMigrationChanged != null)
             {
@@ -53,7 +58,7 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        public virtual void OnCompletedMigrationChanged(EventArgs e)
+        public virtual void OnCompletedMigrationChanged(DbMigratorEventArgs e)
         {
             if (CompletedMigrationChanged != null)
             {
@@ -61,34 +66,34 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        protected virtual IEnumerable<DbMigrator> GetMigrators()
+        protected virtual void LoadMigrators()
         {
             Logger logger = new Logger(LoggerTextBox);
 
-            IEnumerable<DbMigrator> migrators =
+            IEnumerable<Type> migratorTypes =
                 from a in AppDomain.CurrentDomain.GetAssemblies()
                 from t in a.GetLoadableTypes()
                 where t.IsClass && !t.IsAbstract && t.GetInterfaces().Contains(typeof(IMigrationConfiguration))
-                select CreateDbMigrator(t, logger);
+                select t;
 
-            if (migrators == null || !migrators.Any())
+            if (migratorTypes.Any())
+            {
+                foreach (Type type in migratorTypes)
+                {
+                    DbMigrationsConfiguration dbMigrationsConfiguration = (DbMigrationsConfiguration)Activator.CreateInstance(type);
+
+                    IMigrationConfiguration migrationConfiguration = (IMigrationConfiguration)dbMigrationsConfiguration;
+                    migrationConfiguration.Logger = logger;
+                    logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
+
+                    DbMigrator migrator = new DbMigrator(dbMigrationsConfiguration);
+                    Migrators.Add(migrationConfiguration.Title, migrator);
+                }
+            }
+            else
             {
                 logger.WriteLine("No migration configurations found");
             }
-
-            return migrators;
-        }
-
-        protected virtual DbMigrator CreateDbMigrator(Type type, Logger logger)
-        {
-            DbMigrationsConfiguration dbMigrationsConfiguration = (DbMigrationsConfiguration)Activator.CreateInstance(type);
-
-            IMigrationConfiguration migrationConfiguration = (IMigrationConfiguration)dbMigrationsConfiguration;
-            migrationConfiguration.Logger = logger;
-            logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
-
-            DbMigrator migrator = new DbMigrator(dbMigrationsConfiguration);
-            return migrator;
         }
     }
 }

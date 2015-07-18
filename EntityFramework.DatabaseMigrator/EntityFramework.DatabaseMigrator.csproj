@@ -66,6 +66,7 @@
       <DependentUpon>DatabaseMigrator.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\BaseMigrationConfiguration.cs" />
+    <Compile Include="Migrations\DbMigratorEventArgs.cs" />
     <Compile Include="Migrations\Helpers.cs" />
     <Compile Include="Migrations\IMigrationConfiguration.cs" />
     <Compile Include="Migrations\Logger.cs" />
