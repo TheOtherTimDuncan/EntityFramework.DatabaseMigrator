@@ -11,9 +11,9 @@ namespace EntityFramework.DatabaseMigrator
 {
     public class BaseDatabaseMigrator : Form
     {
-        public event DbMigratorEventHandler MigrationTargetChanged;
-        public event DbMigratorEventHandler PendingMigrationChanged;
-        public event DbMigratorEventHandler CompletedMigrationChanged;
+        public event MigrationTargetChangedEventHandler MigrationTargetChanged;
+        public event MigrationChangedEventHandler PendingMigrationChanged;
+        public event MigrationChangedEventHandler CompletedMigrationChanged;
 
         public BaseDatabaseMigrator()
         {
@@ -27,6 +27,12 @@ namespace EntityFramework.DatabaseMigrator
             if (!DesignMode)
             {
                 LoadMigrators();
+
+                if (Migrators.Count() > 0)
+                {
+                    var keyValue = Migrators.First();
+                    OnMigrationTargetChanged(new MigrationTargetChangedEventArgs(keyValue.Value, keyValue.Key));
+                }
             }
         }
 
@@ -36,13 +42,13 @@ namespace EntityFramework.DatabaseMigrator
             set;
         }
 
-        public Dictionary<string,DbMigrator> Migrators
+        public Dictionary<string, DbMigrator> Migrators
         {
             get;
             private set;
         }
 
-        public virtual void OnMigrationTargetChanged(DbMigratorEventArgs e)
+        public virtual void OnMigrationTargetChanged(MigrationTargetChangedEventArgs e)
         {
             if (MigrationTargetChanged != null)
             {
@@ -50,7 +56,7 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        public virtual void OnPendingMigrationTargetChanged(DbMigratorEventArgs e)
+        public virtual void OnPendingMigrationTargetChanged(MigrationChangedEventArgs e)
         {
             if (PendingMigrationChanged != null)
             {
@@ -58,7 +64,7 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        public virtual void OnCompletedMigrationChanged(DbMigratorEventArgs e)
+        public virtual void OnCompletedMigrationChanged(MigrationChangedEventArgs e)
         {
             if (CompletedMigrationChanged != null)
             {

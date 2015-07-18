@@ -8,12 +8,19 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class DbMigratorEventArgs : EventArgs
     {
-        public DbMigratorEventArgs(DbMigrator migrator)
+        public DbMigratorEventArgs(DbMigrator migrator, string migratorTitle)
         {
             this.Migrator = migrator;
+            this.MigratorTitle = migratorTitle;
         }
 
         public DbMigrator Migrator
+        {
+            get;
+            private set;
+        }
+
+        public string MigratorTitle
         {
             get;
             private set;

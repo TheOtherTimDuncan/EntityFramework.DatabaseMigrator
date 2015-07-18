@@ -70,6 +70,8 @@
     <Compile Include="Migrations\Helpers.cs" />
     <Compile Include="Migrations\IMigrationConfiguration.cs" />
     <Compile Include="Migrations\Logger.cs" />
+    <Compile Include="Migrations\MigrationChangedEventArgs.cs" />
+    <Compile Include="Migrations\MigrationTargetChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DatabaseMigrator.resx">
       <DependentUpon>DatabaseMigrator.cs</DependentUpon>
