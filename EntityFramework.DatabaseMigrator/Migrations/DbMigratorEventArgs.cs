@@ -8,10 +8,11 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class DbMigratorEventArgs : EventArgs
     {
-        public DbMigratorEventArgs(MigratorLoggingDecorator migrator, string migratorTitle)
+        public DbMigratorEventArgs(MigratorLoggingDecorator migrator)
         {
             this.Migrator = migrator;
-            this.MigratorTitle = migratorTitle;
+            this.PendingMigrations = migrator.GetPendingMigrations();
+            this.CompletedMigrations = migrator.GetDatabaseMigrations();
         }
 
         public MigratorLoggingDecorator Migrator
@@ -20,10 +21,16 @@ namespace EntityFramework.DatabaseMigrator.Migrations
             private set;
         }
 
-        public string MigratorTitle
+        public IEnumerable<string> PendingMigrations
         {
             get;
             private set;
+        }
+
+        public IEnumerable<string> CompletedMigrations
+        {
+            get;
+            set;
         }
     }
 }

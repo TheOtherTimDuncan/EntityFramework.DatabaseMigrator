@@ -135,6 +135,7 @@
             this.btnMigrate.TabIndex = 11;
             this.btnMigrate.Text = "Migrate To";
             this.btnMigrate.UseVisualStyleBackColor = true;
+            this.btnMigrate.Click += new System.EventHandler(this.btnMigrate_Click);
             // 
             // btnRollbackSql
             // 
@@ -154,6 +155,7 @@
             this.btnRollback.TabIndex = 13;
             this.btnRollback.Text = "Rollback To";
             this.btnRollback.UseVisualStyleBackColor = true;
+            this.btnRollback.Click += new System.EventHandler(this.btnRollback_Click);
             // 
             // btnMigrationHistory
             // 

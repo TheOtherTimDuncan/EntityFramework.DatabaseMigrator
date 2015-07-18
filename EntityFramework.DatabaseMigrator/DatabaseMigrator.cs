@@ -15,7 +15,6 @@ namespace EntityFramework.DatabaseMigrator
     public partial class DatabaseMigrator : BaseDatabaseMigrator
     {
         private MigratorLoggingDecorator _currentMigrator;
-        private string _currentMigratorTitle;
         private string _currentPending;
         private string _currentCompleted;
 
@@ -27,6 +26,7 @@ namespace EntityFramework.DatabaseMigrator
             LoggerTextBox = txtLog;
 
             MigrationTargetChanged += DatabaseMigrator_MigrationTargetChanged;
+            MigrationCompleted += DatabaseMigrator_MigrationCompleted;
         }
 
         protected override void LoadMigrators()
@@ -49,14 +49,8 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        private void DatabaseMigrator_MigrationTargetChanged(object sender, MigrationTargetChangedEventArgs e)
+        private void UpdateMigrationLists(DbMigratorEventArgs e)
         {
-            _currentMigrator = e.Migrator;
-            _currentMigratorTitle = e.MigratorTitle;
-
-            lblMigrationTarget.Text = e.MigratorTitle;
-            cmbMigrationTarget.SelectedText = e.MigratorTitle;
-
             lbPending.DataSource = e.PendingMigrations;
             btnMigrateSql.Enabled = e.PendingMigrations.Any();
             btnMigrate.Enabled = btnMigrateSql.Enabled;
@@ -67,13 +61,28 @@ namespace EntityFramework.DatabaseMigrator
             btnMigrationHistory.Enabled = btnRollbackSql.Enabled;
         }
 
+        private void DatabaseMigrator_MigrationTargetChanged(object sender, MigrationTargetChangedEventArgs e)
+        {
+            _currentMigrator = e.Migrator;
+
+            lblMigrationTarget.Text = e.MigratorTitle;
+            cmbMigrationTarget.SelectedText = e.MigratorTitle;
+
+            UpdateMigrationLists(e);
+        }
+
+        private void DatabaseMigrator_MigrationCompleted(object sender, DbMigratorEventArgs e)
+        {
+            UpdateMigrationLists(e);
+        }
+
         private void lbPending_SelectedIndexChanged(object sender, EventArgs e)
         {
             _currentPending = (string)lbPending.SelectedItem;
             btnMigrateSql.Text = "View Sql For Migration To " + _currentPending;
             btnMigrate.Text = "Migrate to " + _currentPending;
 
-            OnPendingMigrationTargetChanged(new MigrationChangedEventArgs(_currentMigrator, _currentMigratorTitle, _currentPending));
+            OnPendingMigrationTargetChanged(new MigrationChangedEventArgs(_currentMigrator, _currentPending));
         }
 
         private void lbCompleted_SelectedIndexChanged(object sender, EventArgs e)
@@ -83,7 +92,7 @@ namespace EntityFramework.DatabaseMigrator
             btnRollback.Text = "Rollback to " + _currentCompleted;
             btnMigrationHistory.Text = "View Migration History For " + _currentCompleted;
 
-            OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentMigrator, _currentMigratorTitle, _currentPending));
+            OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentMigrator, _currentPending));
 
         }
 
@@ -97,6 +106,19 @@ namespace EntityFramework.DatabaseMigrator
         {
             txtLog.AppendText(Environment.NewLine);
             txtLog.AppendText(GetMigrationSql(_currentMigrator, _currentCompleted));
+        }
+
+        private void btnRollback_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to rollback to " + _currentCompleted + "?", "Rollback Migration", MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.Yes)
+            {
+                ExecuteMigration(_currentMigrator, _currentCompleted);
+            }
+        }
+
+        private void btnMigrate_Click(object sender, EventArgs e)
+        {
+            ExecuteMigration(_currentMigrator, _currentPending);
         }
     }
 }

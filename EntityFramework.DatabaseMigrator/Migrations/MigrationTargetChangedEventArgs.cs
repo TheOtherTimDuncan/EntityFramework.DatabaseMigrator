@@ -9,22 +9,15 @@ namespace EntityFramework.DatabaseMigrator.Migrations
     public class MigrationTargetChangedEventArgs : DbMigratorEventArgs
     {
         public MigrationTargetChangedEventArgs(MigratorLoggingDecorator migrator, string migratorTitle)
-            : base(migrator, migratorTitle)
+            : base(migrator)
         {
-            PendingMigrations = migrator.GetPendingMigrations();
-            CompletedMigrations = migrator.GetDatabaseMigrations();
+            MigratorTitle = migratorTitle;
         }
 
-        public IEnumerable<string> PendingMigrations
+        public string MigratorTitle
         {
             get;
             private set;
-        }
-
-        public IEnumerable<string> CompletedMigrations
-        {
-            get;
-            set;
         }
     }
 }

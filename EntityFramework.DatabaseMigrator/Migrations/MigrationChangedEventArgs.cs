@@ -8,8 +8,8 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class MigrationChangedEventArgs : DbMigratorEventArgs
     {
-        public MigrationChangedEventArgs(MigratorLoggingDecorator migrator, string migratorTitle, string migrationName)
-            : base(migrator, migratorTitle)
+        public MigrationChangedEventArgs(MigratorLoggingDecorator migrator, string migrationName)
+            : base(migrator)
         {
             this.MigrationName = migrationName;
         }
