@@ -12,6 +12,7 @@ namespace EntityFramework.DatabaseMigrator.Example
     public partial class Form1 : BaseDatabaseMigrator
     {
         public Form1()
+            : base()
         {
             InitializeComponent();
         }

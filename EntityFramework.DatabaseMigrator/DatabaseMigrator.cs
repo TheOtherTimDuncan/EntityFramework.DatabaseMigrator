@@ -12,8 +12,11 @@ namespace EntityFramework.DatabaseMigrator
     public partial class DatabaseMigrator : BaseDatabaseMigrator
     {
         public DatabaseMigrator()
+            : base()
         {
             InitializeComponent();
+
+            LoggerTextBox = txtLog;
         }
     }
 }

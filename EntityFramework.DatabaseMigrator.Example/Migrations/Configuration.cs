@@ -4,8 +4,9 @@ namespace EntityFramework.DatabaseMigrator.Example.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using EntityFramework.DatabaseMigrator.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<EntityFramework.DatabaseMigrator.Example.Data.BlogContext>
+    internal sealed class Configuration : BaseMigrationConfiguration<EntityFramework.DatabaseMigrator.Example.Data.BlogContext>
     {
         public Configuration()
         {
