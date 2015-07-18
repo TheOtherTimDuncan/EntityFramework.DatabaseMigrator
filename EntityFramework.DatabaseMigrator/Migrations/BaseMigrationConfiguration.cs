@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace EntityFramework.DatabaseMigrator.Migrations
 {
-    public class BaseMigrationConfiguration<TContext> : DbMigrationsConfiguration<TContext>, IMigrationConfiguration where TContext : DbContext
+    public abstract class BaseMigrationConfiguration<TContext> : DbMigrationsConfiguration<TContext>, IMigrationConfiguration where TContext : DbContext
     {
         public MigrationsLogger Logger
         {
