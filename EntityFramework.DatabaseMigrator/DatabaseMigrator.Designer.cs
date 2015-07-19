@@ -180,6 +180,7 @@
             this.btnRollbackAll.TabIndex = 15;
             this.btnRollbackAll.Text = "Rollback All Migrations";
             this.btnRollbackAll.UseVisualStyleBackColor = false;
+            this.btnRollbackAll.Click += new System.EventHandler(this.btnRollbackAll_Click);
             // 
             // btnRollbackAllSql
             // 
@@ -189,6 +190,7 @@
             this.btnRollbackAllSql.TabIndex = 16;
             this.btnRollbackAllSql.Text = "View SQL For Rollback All";
             this.btnRollbackAllSql.UseVisualStyleBackColor = true;
+            this.btnRollbackAllSql.Click += new System.EventHandler(this.btnRollbackAllSql_Click);
             // 
             // btnClearLog
             // 

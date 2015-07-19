@@ -127,6 +127,20 @@ namespace EntityFramework.DatabaseMigrator
             txtLog.AppendText(GetMigrationHistory(_currentMigrator, _currentCompleted));
         }
 
+        private void btnRollbackAllSql_Click(object sender, EventArgs e)
+        {
+            txtLog.AppendText(Environment.NewLine);
+            txtLog.AppendText(GetRollbackAllSql(_currentMigrator));
+        }
+
+        private void btnRollbackAll_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to rollback all migrations?", "Rollback All Migrations", MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.Yes)
+            {
+                RollbackAll(_currentMigrator);
+            }
+        }
+
         private void btnClearLog_Click(object sender, EventArgs e)
         {
             txtLog.Text = "";

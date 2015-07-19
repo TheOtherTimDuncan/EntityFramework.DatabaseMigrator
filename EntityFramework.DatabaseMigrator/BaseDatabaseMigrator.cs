@@ -129,6 +129,19 @@ namespace EntityFramework.DatabaseMigrator
             OnMigrationCompleted(new DbMigratorEventArgs(migrator));
         }
 
+        protected string GetRollbackAllSql(MigratorLoggingDecorator migrator)
+        {
+            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(migrator);
+            string sql = loggingScripter.ScriptUpdate(null, "0");
+            return sql;
+        }
+
+        protected void RollbackAll(MigratorLoggingDecorator migrator)
+        {
+            migrator.Update("0");
+            OnMigrationCompleted(new DbMigratorEventArgs(migrator));
+        }
+
         protected string GetMigrationHistory(MigratorLoggingDecorator migrator, string migrationName)
         {
             // I would rather not use reflection to get the needed DbConnection but the alternative is requiring 
