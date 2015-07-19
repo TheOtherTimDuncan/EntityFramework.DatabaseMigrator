@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.History;
 using System.Data.Entity.Migrations.Infrastructure;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using EntityFramework.DatabaseMigrator.Migrations;
 
 namespace EntityFramework.DatabaseMigrator
@@ -122,6 +127,43 @@ namespace EntityFramework.DatabaseMigrator
         {
             migrator.Update(migrationName);
             OnMigrationCompleted(new DbMigratorEventArgs(migrator));
+        }
+
+        protected string GetMigrationHistory(MigratorLoggingDecorator migrator, string migrationName)
+        {
+            // I would rather not use reflection to get the needed DbConnection but the alternative is requiring 
+            // more configuraton or hardcoding to SQL Server. This looks to be the lesser of multiple evils
+
+            // Since the decorator wraps the DbMigrator we first have to get the underling DbMigrator
+            FieldInfo field = migrator.GetType().BaseType.GetField("_this", BindingFlags.NonPublic | BindingFlags.Instance);
+            object fieldValue = field.GetValue(migrator);
+
+            // Now we can get the method we need to create the DbConnection
+            MethodInfo method = fieldValue.GetType().GetMethod("CreateConnection", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            using (DbConnection dbConnection = (DbConnection)method.Invoke(fieldValue, null))
+            {
+                dbConnection.Open();
+
+                using (HistoryContext historyContext = new HistoryContext(dbConnection, null))
+                {
+                    HistoryRow history = historyContext.History.SingleOrDefault(x => x.MigrationId == migrationName);
+                    if (history != null)
+                    {
+                        using (MemoryStream stream = new MemoryStream(history.Model))
+                        {
+                            using (GZipStream gzip = new GZipStream(stream, CompressionMode.Decompress))
+                            {
+                                return XDocument.Load(gzip).ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return "Migration name not found";
+                    }
+                }
+            }
         }
     }
 }

@@ -165,6 +165,7 @@
             this.btnMigrationHistory.TabIndex = 14;
             this.btnMigrationHistory.Text = "View Migration History";
             this.btnMigrationHistory.UseVisualStyleBackColor = true;
+            this.btnMigrationHistory.Click += new System.EventHandler(this.btnMigrationHistory_Click);
             // 
             // DatabaseMigrator
             // 

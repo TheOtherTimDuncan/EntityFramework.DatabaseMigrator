@@ -120,5 +120,11 @@ namespace EntityFramework.DatabaseMigrator
         {
             ExecuteMigration(_currentMigrator, _currentPending);
         }
+
+        private void btnMigrationHistory_Click(object sender, EventArgs e)
+        {
+            txtLog.AppendText(Environment.NewLine);
+            txtLog.AppendText(GetMigrationHistory(_currentMigrator, _currentCompleted));
+        }
     }
 }
