@@ -20,10 +20,15 @@ namespace EntityFramework.DatabaseMigrator.Migrations
             _txt.AppendText(message);
         }
 
+        public virtual void WriteLine()
+        {
+            _txt.AppendText(Environment.NewLine);
+        }
+
         public virtual void WriteLine(string message)
         {
             Write(message);
-            _txt.AppendText(Environment.NewLine);
+            WriteLine();
         }
 
         public override void Info(string message)

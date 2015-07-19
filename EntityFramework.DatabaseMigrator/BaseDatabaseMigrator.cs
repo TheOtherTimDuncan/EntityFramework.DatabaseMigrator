@@ -28,6 +28,12 @@ namespace EntityFramework.DatabaseMigrator
             Load += BaseDatabaseMigrator_Load;
         }
 
+        public Logger Logger
+        {
+            get;
+            private set;
+        }
+
         private void BaseDatabaseMigrator_Load(object sender, EventArgs e)
         {
             if (!DesignMode)
@@ -88,7 +94,7 @@ namespace EntityFramework.DatabaseMigrator
 
         protected virtual void LoadMigrators()
         {
-            Logger logger = new Logger(LoggerTextBox);
+            Logger = new Logger(LoggerTextBox);
 
             IEnumerable<Type> migratorTypes =
                 from a in AppDomain.CurrentDomain.GetAssemblies()
@@ -103,16 +109,16 @@ namespace EntityFramework.DatabaseMigrator
                     DbMigrationsConfiguration dbMigrationsConfiguration = (DbMigrationsConfiguration)Activator.CreateInstance(type);
 
                     IMigrationConfiguration migrationConfiguration = (IMigrationConfiguration)dbMigrationsConfiguration;
-                    migrationConfiguration.Logger = logger;
-                    logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
+                    migrationConfiguration.Logger = Logger;
+                    Logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
 
                     DbMigrator migrator = new DbMigrator(dbMigrationsConfiguration);
-                    Migrators.Add(migrationConfiguration.Title, new MigratorLoggingDecorator(migrator, logger));
+                    Migrators.Add(migrationConfiguration.Title, new MigratorLoggingDecorator(migrator, Logger));
                 }
             }
             else
             {
-                logger.WriteLine("No migration configurations found");
+                Logger.WriteLine("No migration configurations found");
             }
         }
 

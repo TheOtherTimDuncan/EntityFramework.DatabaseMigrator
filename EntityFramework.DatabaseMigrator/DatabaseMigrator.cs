@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using EntityFramework.DatabaseMigrator.Migrations;
 
@@ -93,19 +88,18 @@ namespace EntityFramework.DatabaseMigrator
             btnMigrationHistory.Text = "View Migration History For " + _currentCompleted;
 
             OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentMigrator, _currentPending));
-
         }
 
         private void btnMigrateSql_Click(object sender, EventArgs e)
         {
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText(GetMigrationSql(_currentMigrator, _currentPending));
+            Logger.WriteLine();
+            Logger.WriteLine(GetMigrationSql(_currentMigrator, _currentPending));
         }
 
         private void btnRollbackSql_Click(object sender, EventArgs e)
         {
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText(GetMigrationSql(_currentMigrator, _currentCompleted));
+            Logger.WriteLine();
+            Logger.WriteLine(GetMigrationSql(_currentMigrator, _currentCompleted));
         }
 
         private void btnRollback_Click(object sender, EventArgs e)
@@ -123,14 +117,14 @@ namespace EntityFramework.DatabaseMigrator
 
         private void btnMigrationHistory_Click(object sender, EventArgs e)
         {
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText(GetMigrationHistory(_currentMigrator, _currentCompleted));
+            Logger.WriteLine();
+            Logger.WriteLine(GetMigrationHistory(_currentMigrator, _currentCompleted));
         }
 
         private void btnRollbackAllSql_Click(object sender, EventArgs e)
         {
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText(GetRollbackAllSql(_currentMigrator));
+            Logger.WriteLine();
+            Logger.WriteLine(GetRollbackAllSql(_currentMigrator));
         }
 
         private void btnRollbackAll_Click(object sender, EventArgs e)
@@ -148,11 +142,10 @@ namespace EntityFramework.DatabaseMigrator
 
         private void btnReseed_Click(object sender, EventArgs e)
         {
-            txtLog.AppendText(Environment.NewLine);
-            txtLog.AppendText("Reseeding...");
-            txtLog.AppendText(Environment.NewLine);
+            Logger.WriteLine();
+            Logger.WriteLine("Reseeding...");
             Reseed(_currentMigrator);
-            txtLog.AppendText("Reseed complete.");
+            Logger.WriteLine("Reseed complete.");
         }
     }
 }
