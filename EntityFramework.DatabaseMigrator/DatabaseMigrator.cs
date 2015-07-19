@@ -126,5 +126,10 @@ namespace EntityFramework.DatabaseMigrator
             txtLog.AppendText(Environment.NewLine);
             txtLog.AppendText(GetMigrationHistory(_currentMigrator, _currentCompleted));
         }
+
+        private void btnClearLog_Click(object sender, EventArgs e)
+        {
+            txtLog.Text = "";
+        }
     }
 }
