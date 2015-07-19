@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Infrastructure;
+using System.Data.Entity.Migrations;
 
 namespace EntityFramework.DatabaseMigrator.Migrations
 {
@@ -8,8 +8,8 @@ namespace EntityFramework.DatabaseMigrator.Migrations
 
     public class MigrationChangedEventArgs : DbMigratorEventArgs
     {
-        public MigrationChangedEventArgs(MigratorLoggingDecorator migrator, string migrationName)
-            : base(migrator)
+        public MigrationChangedEventArgs(DbMigrationsConfiguration migrationConfiguration, string migrationName)
+            : base(migrationConfiguration)
         {
             this.MigrationName = migrationName;
         }

@@ -23,7 +23,7 @@ namespace EntityFramework.DatabaseMigrator
 
         public BaseDatabaseMigrator()
         {
-            this.Migrators = new Dictionary<string, MigratorLoggingDecorator>();
+            this.Migrators = new Dictionary<string, DbMigrationsConfiguration>();
 
             Load += BaseDatabaseMigrator_Load;
         }
@@ -54,7 +54,7 @@ namespace EntityFramework.DatabaseMigrator
             set;
         }
 
-        public Dictionary<string, MigratorLoggingDecorator> Migrators
+        public Dictionary<string, DbMigrationsConfiguration> Migrators
         {
             get;
             private set;
@@ -112,8 +112,7 @@ namespace EntityFramework.DatabaseMigrator
                     migrationConfiguration.Logger = Logger;
                     Logger.WriteLine("Found migration configuration for " + migrationConfiguration.Title);
 
-                    DbMigrator migrator = new DbMigrator(dbMigrationsConfiguration);
-                    Migrators.Add(migrationConfiguration.Title, new MigratorLoggingDecorator(migrator, Logger));
+                    Migrators.Add(migrationConfiguration.Title, dbMigrationsConfiguration);
                 }
             }
             else
@@ -122,59 +121,63 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        protected string GetMigrationSql(MigratorLoggingDecorator migrator, string migrationName)
+        protected virtual DbMigrator CreateMigrator(DbMigrationsConfiguration migrationConfiguration)
         {
-            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(migrator);
+            return new DbMigrator(migrationConfiguration);
+        }
+
+        protected virtual MigratorBase CreateLoggingMigrator(DbMigrationsConfiguration migrationConfiguration)
+        {
+            return new MigratorLoggingDecorator(CreateMigrator(migrationConfiguration), Logger);
+        }
+
+        protected string GetMigrationSql(DbMigrationsConfiguration migrationConfiguration, string migrationName)
+        {
+            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
             string sql = loggingScripter.ScriptUpdate(null, migrationName);
             return sql;
         }
 
-        protected void ExecuteMigration(MigratorLoggingDecorator migrator, string migrationName)
+        protected void ExecuteMigration(DbMigrationsConfiguration migrationConfiguration, string migrationName)
         {
+            MigratorBase migrator = CreateLoggingMigrator(migrationConfiguration);
             migrator.Update(migrationName);
-            OnMigrationCompleted(new DbMigratorEventArgs(migrator));
+            OnMigrationCompleted(new DbMigratorEventArgs(migrationConfiguration));
         }
 
-        protected string GetRollbackAllSql(MigratorLoggingDecorator migrator)
+        protected string GetRollbackAllSql(DbMigrationsConfiguration migrationConfiguration)
         {
-            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(migrator);
+            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
             string sql = loggingScripter.ScriptUpdate(null, "0");
             return sql;
         }
 
-        protected void RollbackAll(MigratorLoggingDecorator migrator)
+        protected void RollbackAll(DbMigrationsConfiguration migrationConfiguration)
         {
+            MigratorBase migrator = CreateLoggingMigrator(migrationConfiguration);
             migrator.Update("0");
-            OnMigrationCompleted(new DbMigratorEventArgs(migrator));
+            OnMigrationCompleted(new DbMigratorEventArgs(migrationConfiguration));
         }
 
-        protected void Reseed(MigratorLoggingDecorator migrator)
+        protected void Reseed(DbMigrationsConfiguration migrationConfiguration)
         {
             // I would rather not use reflection for this but the alternatives look to be even worse
             // Sticking with the lesser evil for now
 
-            // Since the decorator wraps the DbMigrator we first have to get the underling DbMigrator
-            FieldInfo field = migrator.GetType().BaseType.GetField("_this", BindingFlags.NonPublic | BindingFlags.Instance);
-            object fieldValue = field.GetValue(migrator);
-
-            // Now we can get the method we need to seed the database and invoke it
-            MethodInfo method = fieldValue.GetType().GetMethod("SeedDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
-            method.Invoke(fieldValue, null);
+            MigratorBase migrator = CreateMigrator(migrationConfiguration);
+            MethodInfo method = migrator.GetType().GetMethod("SeedDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+            method.Invoke(migrator, null);
         }
 
-        protected string GetMigrationHistory(MigratorLoggingDecorator migrator, string migrationName)
+        protected string GetMigrationHistory(DbMigrationsConfiguration migrationConfiguration, string migrationName)
         {
             // I would rather not use reflection to get the needed DbConnection but the alternative is requiring 
             // more configuraton or hardcoding to SQL Server. This looks to be the lesser of multiple evils
 
-            // Since the decorator wraps the DbMigrator we first have to get the underling DbMigrator
-            FieldInfo field = migrator.GetType().BaseType.GetField("_this", BindingFlags.NonPublic | BindingFlags.Instance);
-            object fieldValue = field.GetValue(migrator);
+            MigratorBase migrator = CreateMigrator(migrationConfiguration);
+            MethodInfo method = migrator.GetType().GetMethod("CreateConnection", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            // Now we can get the method we need to create the DbConnection
-            MethodInfo method = fieldValue.GetType().GetMethod("CreateConnection", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            using (DbConnection dbConnection = (DbConnection)method.Invoke(fieldValue, null))
+            using (DbConnection dbConnection = (DbConnection)method.Invoke(migrator, null))
             {
                 dbConnection.Open();
 

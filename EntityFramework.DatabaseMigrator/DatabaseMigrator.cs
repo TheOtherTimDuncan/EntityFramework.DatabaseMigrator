@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Windows.Forms;
 using EntityFramework.DatabaseMigrator.Migrations;
@@ -9,7 +9,7 @@ namespace EntityFramework.DatabaseMigrator
 {
     public partial class DatabaseMigrator : BaseDatabaseMigrator
     {
-        private MigratorLoggingDecorator _currentMigrator;
+        private DbMigrationsConfiguration _currentConfiguration;
         private string _currentPending;
         private string _currentCompleted;
 
@@ -58,7 +58,7 @@ namespace EntityFramework.DatabaseMigrator
 
         private void DatabaseMigrator_MigrationTargetChanged(object sender, MigrationTargetChangedEventArgs e)
         {
-            _currentMigrator = e.Migrator;
+            _currentConfiguration = e.MigrationConfiguration;
 
             lblMigrationTarget.Text = e.MigratorTitle;
             cmbMigrationTarget.SelectedText = e.MigratorTitle;
@@ -77,7 +77,7 @@ namespace EntityFramework.DatabaseMigrator
             btnMigrateSql.Text = "View Sql For Migration To " + _currentPending;
             btnMigrate.Text = "Migrate to " + _currentPending;
 
-            OnPendingMigrationTargetChanged(new MigrationChangedEventArgs(_currentMigrator, _currentPending));
+            OnPendingMigrationTargetChanged(new MigrationChangedEventArgs(_currentConfiguration, _currentPending));
         }
 
         private void lbCompleted_SelectedIndexChanged(object sender, EventArgs e)
@@ -87,51 +87,51 @@ namespace EntityFramework.DatabaseMigrator
             btnRollback.Text = "Rollback to " + _currentCompleted;
             btnMigrationHistory.Text = "View Migration History For " + _currentCompleted;
 
-            OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentMigrator, _currentPending));
+            OnCompletedMigrationChanged(new MigrationChangedEventArgs(_currentConfiguration, _currentPending));
         }
 
         private void btnMigrateSql_Click(object sender, EventArgs e)
         {
             Logger.WriteLine();
-            Logger.WriteLine(GetMigrationSql(_currentMigrator, _currentPending));
+            Logger.WriteLine(GetMigrationSql(_currentConfiguration, _currentPending));
         }
 
         private void btnRollbackSql_Click(object sender, EventArgs e)
         {
             Logger.WriteLine();
-            Logger.WriteLine(GetMigrationSql(_currentMigrator, _currentCompleted));
+            Logger.WriteLine(GetMigrationSql(_currentConfiguration, _currentCompleted));
         }
 
         private void btnRollback_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to rollback to " + _currentCompleted + "?", "Rollback Migration", MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.Yes)
             {
-                ExecuteMigration(_currentMigrator, _currentCompleted);
+                ExecuteMigration(_currentConfiguration, _currentCompleted);
             }
         }
 
         private void btnMigrate_Click(object sender, EventArgs e)
         {
-            ExecuteMigration(_currentMigrator, _currentPending);
+            ExecuteMigration(_currentConfiguration, _currentPending);
         }
 
         private void btnMigrationHistory_Click(object sender, EventArgs e)
         {
             Logger.WriteLine();
-            Logger.WriteLine(GetMigrationHistory(_currentMigrator, _currentCompleted));
+            Logger.WriteLine(GetMigrationHistory(_currentConfiguration, _currentCompleted));
         }
 
         private void btnRollbackAllSql_Click(object sender, EventArgs e)
         {
             Logger.WriteLine();
-            Logger.WriteLine(GetRollbackAllSql(_currentMigrator));
+            Logger.WriteLine(GetRollbackAllSql(_currentConfiguration));
         }
 
         private void btnRollbackAll_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to rollback all migrations?", "Rollback All Migrations", MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.Yes)
             {
-                RollbackAll(_currentMigrator);
+                RollbackAll(_currentConfiguration);
             }
         }
 
@@ -144,7 +144,7 @@ namespace EntityFramework.DatabaseMigrator
         {
             Logger.WriteLine();
             Logger.WriteLine("Reseeding...");
-            Reseed(_currentMigrator);
+            Reseed(_currentConfiguration);
             Logger.WriteLine("Reseed complete.");
         }
     }
