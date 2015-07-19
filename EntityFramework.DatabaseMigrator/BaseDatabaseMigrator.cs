@@ -142,6 +142,20 @@ namespace EntityFramework.DatabaseMigrator
             OnMigrationCompleted(new DbMigratorEventArgs(migrator));
         }
 
+        protected void Reseed(MigratorLoggingDecorator migrator)
+        {
+            // I would rather not use reflection for this but the alternatives look to be even worse
+            // Sticking with the lesser evil for now
+
+            // Since the decorator wraps the DbMigrator we first have to get the underling DbMigrator
+            FieldInfo field = migrator.GetType().BaseType.GetField("_this", BindingFlags.NonPublic | BindingFlags.Instance);
+            object fieldValue = field.GetValue(migrator);
+
+            // Now we can get the method we need to seed the database and invoke it
+            MethodInfo method = fieldValue.GetType().GetMethod("SeedDatabase", BindingFlags.NonPublic | BindingFlags.Instance);
+            method.Invoke(fieldValue, null);
+        }
+
         protected string GetMigrationHistory(MigratorLoggingDecorator migrator, string migrationName)
         {
             // I would rather not use reflection to get the needed DbConnection but the alternative is requiring 

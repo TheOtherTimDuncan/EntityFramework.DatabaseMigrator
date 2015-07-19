@@ -44,6 +44,7 @@
             this.btnRollbackAll = new System.Windows.Forms.Button();
             this.btnRollbackAllSql = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
+            this.btnReseed = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtLog
@@ -202,11 +203,22 @@
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
             // 
+            // btnReseed
+            // 
+            this.btnReseed.Location = new System.Drawing.Point(835, 133);
+            this.btnReseed.Name = "btnReseed";
+            this.btnReseed.Size = new System.Drawing.Size(149, 23);
+            this.btnReseed.TabIndex = 18;
+            this.btnReseed.Text = "Reseed";
+            this.btnReseed.UseVisualStyleBackColor = true;
+            this.btnReseed.Click += new System.EventHandler(this.btnReseed_Click);
+            // 
             // DatabaseMigrator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(997, 528);
+            this.Controls.Add(this.btnReseed);
             this.Controls.Add(this.btnClearLog);
             this.Controls.Add(this.btnRollbackAllSql);
             this.Controls.Add(this.btnRollbackAll);
@@ -248,6 +260,7 @@
         private System.Windows.Forms.Button btnRollbackAll;
         private System.Windows.Forms.Button btnRollbackAllSql;
         private System.Windows.Forms.Button btnClearLog;
+        private System.Windows.Forms.Button btnReseed;
     }
 }
 

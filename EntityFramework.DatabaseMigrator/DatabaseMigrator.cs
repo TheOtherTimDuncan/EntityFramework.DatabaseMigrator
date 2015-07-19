@@ -145,5 +145,14 @@ namespace EntityFramework.DatabaseMigrator
         {
             txtLog.Text = "";
         }
+
+        private void btnReseed_Click(object sender, EventArgs e)
+        {
+            txtLog.AppendText(Environment.NewLine);
+            txtLog.AppendText("Reseeding...");
+            txtLog.AppendText(Environment.NewLine);
+            Reseed(_currentMigrator);
+            txtLog.AppendText("Reseed complete.");
+        }
     }
 }
