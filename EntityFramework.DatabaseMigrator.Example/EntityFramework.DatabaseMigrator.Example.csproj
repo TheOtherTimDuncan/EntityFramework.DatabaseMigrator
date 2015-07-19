@@ -55,12 +55,6 @@
   <ItemGroup>
     <Compile Include="Data\Blog.cs" />
     <Compile Include="Data\BlogContext.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201507152326293_InitialCreate.cs" />
     <Compile Include="Migrations\201507152326293_InitialCreate.Designer.cs">
       <DependentUpon>201507152326293_InitialCreate.cs</DependentUpon>
