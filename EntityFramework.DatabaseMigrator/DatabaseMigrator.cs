@@ -36,6 +36,7 @@ namespace EntityFramework.DatabaseMigrator
                 cmbMigrationTarget.DataSource = new BindingSource(Migrators, null);
                 cmbMigrationTarget.DisplayMember = "Key";
                 cmbMigrationTarget.ValueMember = "Key";
+                cmbMigrationTarget.SelectedIndexChanged += cmbMigrationTarget_SelectedIndexChanged;
             }
             else if (Migrators.Count() == 1)
             {
@@ -146,6 +147,12 @@ namespace EntityFramework.DatabaseMigrator
             Logger.WriteLine("Reseeding...");
             Reseed(_currentConfiguration);
             Logger.WriteLine("Reseed complete.");
+        }
+
+        private void cmbMigrationTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = (KeyValuePair<string, DbMigrationsConfiguration>)cmbMigrationTarget.SelectedItem;
+            OnMigrationTargetChanged(new MigrationTargetChangedEventArgs(item.Value, item.Key));
         }
     }
 }
