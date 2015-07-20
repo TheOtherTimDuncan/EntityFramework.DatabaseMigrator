@@ -10,7 +10,6 @@
     <licenseUrl>https://github.com/TheOtherTimDuncan/EntityFramework.DatabaseMigrator/blob/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/TheOtherTimDuncan/EntityFramework.DatabaseMigrator/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Entity Framework EF EF6 Migrations</tags>
   </metadata>
