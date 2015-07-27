@@ -8,6 +8,8 @@ Install-Package EntityFramework.DatabaseMigrator
 
 Back story and additional details available [here](http://theothertimduncan.com/archive/Entity-Framework-Migrations-Real-World/).
 
+### Instructions
+
 Assuming you already have migrations enabled,
 
 1. Add a new WinForms project to your solution.
