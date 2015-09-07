@@ -148,14 +148,14 @@ namespace EntityFramework.DatabaseMigrator
         protected string GetRollbackAllSql(DbMigrationsConfiguration migrationConfiguration)
         {
             MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
-            string sql = loggingScripter.ScriptUpdate(null, "0");
+            string sql = loggingScripter.ScriptUpdate(null, DbMigrator.InitialDatabase);
             return sql;
         }
 
         protected void RollbackAll(DbMigrationsConfiguration migrationConfiguration)
         {
             MigratorBase migrator = CreateLoggingMigrator(migrationConfiguration);
-            migrator.Update("0");
+            migrator.Update(DbMigrator.InitialDatabase);
             OnMigrationCompleted(new DbMigratorEventArgs(migrationConfiguration));
         }
 
