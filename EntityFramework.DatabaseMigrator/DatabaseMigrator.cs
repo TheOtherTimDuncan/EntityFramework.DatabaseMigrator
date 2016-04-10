@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
@@ -28,6 +30,7 @@ namespace EntityFramework.DatabaseMigrator
             MigrationTargetChanged += DatabaseMigrator_MigrationTargetChanged;
             MigrationCompleted += DatabaseMigrator_MigrationCompleted;
             SqlTargetChanged += DatabaseMigrator_SqlTargetChanged;
+            ConnectionStringChanged += DatabaseMigrator_ConnectionStringChanged;
 
             cmbSqlTarget.Items.AddRange(new[] { SQL_TARGET_CONSOLE, SQL_TARGET_FILE });
             _currentSqlTarget = SQL_TARGET_CONSOLE;
@@ -53,6 +56,22 @@ namespace EntityFramework.DatabaseMigrator
                 cmbMigrationTarget.Visible = false;
                 lblMigrationTarget.Visible = true;
             }
+
+            if (ConnectionStrings.Count() > 1)
+            {
+                lblConnectionString.Visible = false;
+
+                cmbConnectionString.Visible = true;
+                cmbConnectionString.Items.AddRange(ConnectionStrings.Select(x => x.Name).ToArray());
+                cmbConnectionString.SelectedIndexChanged += cmbConnectionString_SelectedIndexChanged;
+                cmbConnectionString.Text = ConnectionStrings.First().Name;
+            }
+            else
+            {
+                lblConnectionString.Visible = true;
+                cmbConnectionString.Visible = false;
+                lblConnectionString.Text = GetConnectionStringDisplay(ConnectionStrings.Single());
+            }
         }
 
         private void UpdateMigrationLists(DbMigratorEventArgs e)
@@ -70,6 +89,11 @@ namespace EntityFramework.DatabaseMigrator
         private void SetMigrateSqlText()
         {
             btnMigrateSql.Text = "Get Sql For Migration To " + _currentPending + " To " + _currentSqlTarget;
+        }
+
+        private string GetConnectionStringDisplay(ConnectionStringSettings setting)
+        {
+            return setting.Name + " (" + setting.ConnectionString + ")";
         }
 
         private void HandleSql(string sql)
@@ -100,8 +124,27 @@ namespace EntityFramework.DatabaseMigrator
             _currentConfiguration = e.MigrationConfiguration;
 
             lblMigrationTarget.Text = e.MigratorTitle;
-            cmbMigrationTarget.SelectedText = e.MigratorTitle;
+            cmbMigrationTarget.Text = e.MigratorTitle;
 
+            UpdateMigrationLists(e);
+        }
+
+        private void cmbConnectionString_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_currentConfiguration != null)
+            {
+                ConnectionStringSettings setting = ConnectionStrings.Single(x => x.Name == (string)cmbConnectionString.SelectedItem);
+
+                Logger.WriteLine("Using connection string " + GetConnectionStringDisplay(setting));
+                Logger.WriteLine();
+
+                _currentConfiguration.TargetDatabase = new DbConnectionInfo(setting.Name);
+                OnConnectionStringChanged(new ConnectionStringChangedEventArgs(_currentConfiguration, setting));
+            }
+        }
+
+        private void DatabaseMigrator_ConnectionStringChanged(object sender, ConnectionStringChangedEventArgs e)
+        {
             UpdateMigrationLists(e);
         }
 

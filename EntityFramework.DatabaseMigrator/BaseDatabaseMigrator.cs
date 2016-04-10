@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.History;
@@ -21,15 +22,26 @@ namespace EntityFramework.DatabaseMigrator
         public event MigrationChangedEventHandler CompletedMigrationChanged;
         public event DbMigratorEventHandler MigrationCompleted;
         public event SqlTargetEventHandler SqlTargetChanged;
+        public event ConnectionStringChangedEventHandler ConnectionStringChanged;
 
         public BaseDatabaseMigrator()
         {
             this.Migrators = new Dictionary<string, DbMigrationsConfiguration>();
 
+            this.ConnectionStrings = ConfigurationManager.ConnectionStrings
+                .Cast<ConnectionStringSettings>()
+                .ToList();
+
             Load += BaseDatabaseMigrator_Load;
         }
 
         public Logger Logger
+        {
+            get;
+            private set;
+        }
+
+        public IEnumerable<ConnectionStringSettings> ConnectionStrings
         {
             get;
             private set;
@@ -98,6 +110,14 @@ namespace EntityFramework.DatabaseMigrator
             if (SqlTargetChanged != null)
             {
                 SqlTargetChanged(this, e);
+            }
+        }
+
+        public virtual void OnConnectionStringChanged(ConnectionStringChangedEventArgs e)
+        {
+            if (ConnectionStringChanged != null)
+            {
+                ConnectionStringChanged(this, e);
             }
         }
 
