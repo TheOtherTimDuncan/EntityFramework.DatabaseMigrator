@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EntityFramework.DatabaseMigrator.Migrations;
@@ -12,6 +13,10 @@ namespace EntityFramework.DatabaseMigrator
         private DbMigrationsConfiguration _currentConfiguration;
         private string _currentPending;
         private string _currentCompleted;
+        private string _currentSqlTarget;
+
+        protected const string SQL_TARGET_CONSOLE = "Console";
+        protected const string SQL_TARGET_FILE = "File";
 
         public DatabaseMigrator()
             : base()
@@ -22,6 +27,11 @@ namespace EntityFramework.DatabaseMigrator
 
             MigrationTargetChanged += DatabaseMigrator_MigrationTargetChanged;
             MigrationCompleted += DatabaseMigrator_MigrationCompleted;
+            SqlTargetChanged += DatabaseMigrator_SqlTargetChanged;
+
+            cmbSqlTarget.Items.AddRange(new[] { SQL_TARGET_CONSOLE, SQL_TARGET_FILE });
+            _currentSqlTarget = SQL_TARGET_CONSOLE;
+            cmbSqlTarget.Text = _currentSqlTarget;
         }
 
         protected override void LoadMigrators()
@@ -57,6 +67,34 @@ namespace EntityFramework.DatabaseMigrator
             btnMigrationHistory.Enabled = btnRollbackSql.Enabled;
         }
 
+        private void SetMigrateSqlText()
+        {
+            btnMigrateSql.Text = "Get Sql For Migration To " + _currentPending + " To " + _currentSqlTarget;
+        }
+
+        private void HandleSql(string sql)
+        {
+            Logger.WriteLine();
+
+            if (_currentSqlTarget == SQL_TARGET_CONSOLE)
+            {
+                Logger.WriteLine(sql);
+            }
+            else
+            {
+                using (SaveFileDialog dlg = new SaveFileDialog())
+                {
+                    dlg.DefaultExt = "sql";
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(dlg.FileName, sql);
+                        Logger.WriteLine("SQL saved to " + dlg.FileName);
+                    }
+                }
+            }
+        }
+
         private void DatabaseMigrator_MigrationTargetChanged(object sender, MigrationTargetChangedEventArgs e)
         {
             _currentConfiguration = e.MigrationConfiguration;
@@ -75,7 +113,7 @@ namespace EntityFramework.DatabaseMigrator
         private void lbPending_SelectedIndexChanged(object sender, EventArgs e)
         {
             _currentPending = (string)lbPending.SelectedItem;
-            btnMigrateSql.Text = "View Sql For Migration To " + _currentPending;
+            SetMigrateSqlText();
             btnMigrate.Text = "Migrate to " + _currentPending;
 
             OnPendingMigrationTargetChanged(new MigrationChangedEventArgs(_currentConfiguration, _currentPending));
@@ -93,14 +131,12 @@ namespace EntityFramework.DatabaseMigrator
 
         private void btnMigrateSql_Click(object sender, EventArgs e)
         {
-            Logger.WriteLine();
-            Logger.WriteLine(GetMigrationSql(_currentConfiguration, _currentPending));
+            HandleSql(GetMigrationSql(_currentConfiguration, _currentPending));
         }
 
         private void btnRollbackSql_Click(object sender, EventArgs e)
         {
-            Logger.WriteLine();
-            Logger.WriteLine(GetMigrationSql(_currentConfiguration, _currentCompleted));
+            HandleSql(GetMigrationSql(_currentConfiguration, _currentCompleted));
         }
 
         private void btnRollback_Click(object sender, EventArgs e)
@@ -124,8 +160,7 @@ namespace EntityFramework.DatabaseMigrator
 
         private void btnRollbackAllSql_Click(object sender, EventArgs e)
         {
-            Logger.WriteLine();
-            Logger.WriteLine(GetRollbackAllSql(_currentConfiguration));
+            HandleSql(GetRollbackAllSql(_currentConfiguration));
         }
 
         private void btnRollbackAll_Click(object sender, EventArgs e)
@@ -153,6 +188,24 @@ namespace EntityFramework.DatabaseMigrator
         {
             var item = (KeyValuePair<string, DbMigrationsConfiguration>)cmbMigrationTarget.SelectedItem;
             OnMigrationTargetChanged(new MigrationTargetChangedEventArgs(item.Value, item.Key));
+        }
+
+        private void btnIdempotent_Click(object sender, EventArgs e)
+        {
+            HandleSql(GetIdempotentMigrationSql(_currentConfiguration));
+        }
+
+        private void cmbSqlTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox sqlTarget = (ComboBox)sender;
+            _currentSqlTarget = (string)sqlTarget.SelectedItem;
+            OnSqlTargetChanged(new SqlTargetEventArgs(_currentSqlTarget));
+        }
+
+        private void DatabaseMigrator_SqlTargetChanged(object sender, SqlTargetEventArgs e)
+        {
+            SetMigrateSqlText();
+            btnIdempotent.Text = "Get Idempotent Migration SQL To " + e.Target;
         }
     }
 }

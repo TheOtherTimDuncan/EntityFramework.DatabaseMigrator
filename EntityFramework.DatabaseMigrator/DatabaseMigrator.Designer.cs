@@ -45,6 +45,9 @@
             this.btnRollbackAllSql = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
             this.btnReseed = new System.Windows.Forms.Button();
+            this.btnIdempotent = new System.Windows.Forms.Button();
+            this.lblSqlTarget = new System.Windows.Forms.Label();
+            this.cmbSqlTarget = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtLog
@@ -52,90 +55,102 @@
             this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLog.Location = new System.Drawing.Point(12, 251);
+            this.txtLog.Location = new System.Drawing.Point(16, 309);
+            this.txtLog.Margin = new System.Windows.Forms.Padding(4);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(973, 265);
+            this.txtLog.Size = new System.Drawing.Size(1296, 325);
             this.txtLog.TabIndex = 0;
             // 
             // lblTarget
             // 
             this.lblTarget.AutoSize = true;
-            this.lblTarget.Location = new System.Drawing.Point(9, 16);
+            this.lblTarget.Location = new System.Drawing.Point(12, 20);
+            this.lblTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTarget.Name = "lblTarget";
-            this.lblTarget.Size = new System.Drawing.Size(83, 13);
+            this.lblTarget.Size = new System.Drawing.Size(111, 17);
             this.lblTarget.TabIndex = 1;
             this.lblTarget.Text = "Migration target:";
             // 
             // lblMigrationTarget
             // 
-            this.lblMigrationTarget.Location = new System.Drawing.Point(98, 16);
+            this.lblMigrationTarget.Location = new System.Drawing.Point(131, 20);
+            this.lblMigrationTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMigrationTarget.Name = "lblMigrationTarget";
-            this.lblMigrationTarget.Size = new System.Drawing.Size(314, 13);
+            this.lblMigrationTarget.Size = new System.Drawing.Size(419, 16);
             this.lblMigrationTarget.TabIndex = 2;
             // 
             // cmbMigrationTarget
             // 
             this.cmbMigrationTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMigrationTarget.FormattingEnabled = true;
-            this.cmbMigrationTarget.Location = new System.Drawing.Point(98, 13);
+            this.cmbMigrationTarget.Location = new System.Drawing.Point(131, 16);
+            this.cmbMigrationTarget.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMigrationTarget.Name = "cmbMigrationTarget";
-            this.cmbMigrationTarget.Size = new System.Drawing.Size(314, 21);
+            this.cmbMigrationTarget.Size = new System.Drawing.Size(417, 24);
             this.cmbMigrationTarget.TabIndex = 3;
             this.cmbMigrationTarget.Visible = false;
             // 
             // lbPending
             // 
             this.lbPending.FormattingEnabled = true;
-            this.lbPending.Location = new System.Drawing.Point(12, 62);
+            this.lbPending.ItemHeight = 16;
+            this.lbPending.Location = new System.Drawing.Point(16, 76);
+            this.lbPending.Margin = new System.Windows.Forms.Padding(4);
             this.lbPending.Name = "lbPending";
-            this.lbPending.Size = new System.Drawing.Size(400, 95);
+            this.lbPending.Size = new System.Drawing.Size(532, 116);
             this.lbPending.TabIndex = 3;
             this.lbPending.SelectedIndexChanged += new System.EventHandler(this.lbPending_SelectedIndexChanged);
             // 
             // lblPending
             // 
             this.lblPending.AutoSize = true;
-            this.lblPending.Location = new System.Drawing.Point(9, 46);
+            this.lblPending.Location = new System.Drawing.Point(12, 57);
+            this.lblPending.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPending.Name = "lblPending";
-            this.lblPending.Size = new System.Drawing.Size(100, 13);
+            this.lblPending.Size = new System.Drawing.Size(133, 17);
             this.lblPending.TabIndex = 4;
             this.lblPending.Text = "Pending Migrations:";
             // 
             // lblCompleted
             // 
             this.lblCompleted.AutoSize = true;
-            this.lblCompleted.Location = new System.Drawing.Point(425, 46);
+            this.lblCompleted.Location = new System.Drawing.Point(571, 57);
+            this.lblCompleted.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCompleted.Name = "lblCompleted";
-            this.lblCompleted.Size = new System.Drawing.Size(111, 13);
+            this.lblCompleted.Size = new System.Drawing.Size(148, 17);
             this.lblCompleted.TabIndex = 9;
             this.lblCompleted.Text = "Completed Migrations:";
             // 
             // lbCompleted
             // 
             this.lbCompleted.FormattingEnabled = true;
-            this.lbCompleted.Location = new System.Drawing.Point(428, 62);
+            this.lbCompleted.ItemHeight = 16;
+            this.lbCompleted.Location = new System.Drawing.Point(571, 76);
+            this.lbCompleted.Margin = new System.Windows.Forms.Padding(4);
             this.lbCompleted.Name = "lbCompleted";
-            this.lbCompleted.Size = new System.Drawing.Size(400, 95);
+            this.lbCompleted.Size = new System.Drawing.Size(532, 116);
             this.lbCompleted.TabIndex = 8;
             this.lbCompleted.SelectedIndexChanged += new System.EventHandler(this.lbCompleted_SelectedIndexChanged);
             // 
             // btnMigrateSql
             // 
-            this.btnMigrateSql.Location = new System.Drawing.Point(12, 164);
+            this.btnMigrateSql.Location = new System.Drawing.Point(16, 202);
+            this.btnMigrateSql.Margin = new System.Windows.Forms.Padding(4);
             this.btnMigrateSql.Name = "btnMigrateSql";
-            this.btnMigrateSql.Size = new System.Drawing.Size(400, 23);
+            this.btnMigrateSql.Size = new System.Drawing.Size(533, 28);
             this.btnMigrateSql.TabIndex = 10;
-            this.btnMigrateSql.Text = "View SQL For Migration";
+            this.btnMigrateSql.Text = "Get SQL For Migration";
             this.btnMigrateSql.UseVisualStyleBackColor = true;
             this.btnMigrateSql.Click += new System.EventHandler(this.btnMigrateSql_Click);
             // 
             // btnMigrate
             // 
-            this.btnMigrate.Location = new System.Drawing.Point(12, 194);
+            this.btnMigrate.Location = new System.Drawing.Point(16, 239);
+            this.btnMigrate.Margin = new System.Windows.Forms.Padding(4);
             this.btnMigrate.Name = "btnMigrate";
-            this.btnMigrate.Size = new System.Drawing.Size(400, 23);
+            this.btnMigrate.Size = new System.Drawing.Size(533, 28);
             this.btnMigrate.TabIndex = 11;
             this.btnMigrate.Text = "Migrate To";
             this.btnMigrate.UseVisualStyleBackColor = true;
@@ -143,9 +158,10 @@
             // 
             // btnRollbackSql
             // 
-            this.btnRollbackSql.Location = new System.Drawing.Point(428, 163);
+            this.btnRollbackSql.Location = new System.Drawing.Point(571, 201);
+            this.btnRollbackSql.Margin = new System.Windows.Forms.Padding(4);
             this.btnRollbackSql.Name = "btnRollbackSql";
-            this.btnRollbackSql.Size = new System.Drawing.Size(400, 23);
+            this.btnRollbackSql.Size = new System.Drawing.Size(533, 28);
             this.btnRollbackSql.TabIndex = 12;
             this.btnRollbackSql.Text = "View SQL For Rollback";
             this.btnRollbackSql.UseVisualStyleBackColor = true;
@@ -153,9 +169,10 @@
             // 
             // btnRollback
             // 
-            this.btnRollback.Location = new System.Drawing.Point(428, 193);
+            this.btnRollback.Location = new System.Drawing.Point(571, 238);
+            this.btnRollback.Margin = new System.Windows.Forms.Padding(4);
             this.btnRollback.Name = "btnRollback";
-            this.btnRollback.Size = new System.Drawing.Size(400, 23);
+            this.btnRollback.Size = new System.Drawing.Size(533, 28);
             this.btnRollback.TabIndex = 13;
             this.btnRollback.Text = "Rollback To";
             this.btnRollback.UseVisualStyleBackColor = true;
@@ -163,9 +180,10 @@
             // 
             // btnMigrationHistory
             // 
-            this.btnMigrationHistory.Location = new System.Drawing.Point(428, 222);
+            this.btnMigrationHistory.Location = new System.Drawing.Point(571, 273);
+            this.btnMigrationHistory.Margin = new System.Windows.Forms.Padding(4);
             this.btnMigrationHistory.Name = "btnMigrationHistory";
-            this.btnMigrationHistory.Size = new System.Drawing.Size(400, 23);
+            this.btnMigrationHistory.Size = new System.Drawing.Size(533, 28);
             this.btnMigrationHistory.TabIndex = 14;
             this.btnMigrationHistory.Text = "View Migration History";
             this.btnMigrationHistory.UseVisualStyleBackColor = true;
@@ -175,9 +193,10 @@
             // 
             this.btnRollbackAll.BackColor = System.Drawing.Color.Red;
             this.btnRollbackAll.ForeColor = System.Drawing.Color.White;
-            this.btnRollbackAll.Location = new System.Drawing.Point(835, 62);
+            this.btnRollbackAll.Location = new System.Drawing.Point(1113, 76);
+            this.btnRollbackAll.Margin = new System.Windows.Forms.Padding(4);
             this.btnRollbackAll.Name = "btnRollbackAll";
-            this.btnRollbackAll.Size = new System.Drawing.Size(150, 23);
+            this.btnRollbackAll.Size = new System.Drawing.Size(200, 28);
             this.btnRollbackAll.TabIndex = 15;
             this.btnRollbackAll.Text = "Rollback All Migrations";
             this.btnRollbackAll.UseVisualStyleBackColor = false;
@@ -185,9 +204,10 @@
             // 
             // btnRollbackAllSql
             // 
-            this.btnRollbackAllSql.Location = new System.Drawing.Point(835, 92);
+            this.btnRollbackAllSql.Location = new System.Drawing.Point(1113, 113);
+            this.btnRollbackAllSql.Margin = new System.Windows.Forms.Padding(4);
             this.btnRollbackAllSql.Name = "btnRollbackAllSql";
-            this.btnRollbackAllSql.Size = new System.Drawing.Size(150, 23);
+            this.btnRollbackAllSql.Size = new System.Drawing.Size(200, 28);
             this.btnRollbackAllSql.TabIndex = 16;
             this.btnRollbackAllSql.Text = "View SQL For Rollback All";
             this.btnRollbackAllSql.UseVisualStyleBackColor = true;
@@ -195,9 +215,10 @@
             // 
             // btnClearLog
             // 
-            this.btnClearLog.Location = new System.Drawing.Point(909, 222);
+            this.btnClearLog.Location = new System.Drawing.Point(1212, 273);
+            this.btnClearLog.Margin = new System.Windows.Forms.Padding(4);
             this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(75, 23);
+            this.btnClearLog.Size = new System.Drawing.Size(100, 28);
             this.btnClearLog.TabIndex = 17;
             this.btnClearLog.Text = "Clear Log";
             this.btnClearLog.UseVisualStyleBackColor = true;
@@ -205,19 +226,52 @@
             // 
             // btnReseed
             // 
-            this.btnReseed.Location = new System.Drawing.Point(835, 133);
+            this.btnReseed.Location = new System.Drawing.Point(1113, 164);
+            this.btnReseed.Margin = new System.Windows.Forms.Padding(4);
             this.btnReseed.Name = "btnReseed";
-            this.btnReseed.Size = new System.Drawing.Size(149, 23);
+            this.btnReseed.Size = new System.Drawing.Size(199, 28);
             this.btnReseed.TabIndex = 18;
             this.btnReseed.Text = "Reseed";
             this.btnReseed.UseVisualStyleBackColor = true;
             this.btnReseed.Click += new System.EventHandler(this.btnReseed_Click);
             // 
+            // btnIdempotent
+            // 
+            this.btnIdempotent.Location = new System.Drawing.Point(16, 273);
+            this.btnIdempotent.Name = "btnIdempotent";
+            this.btnIdempotent.Size = new System.Drawing.Size(532, 28);
+            this.btnIdempotent.TabIndex = 19;
+            this.btnIdempotent.Text = "Get Idempotent Migration SQL";
+            this.btnIdempotent.UseVisualStyleBackColor = true;
+            this.btnIdempotent.Click += new System.EventHandler(this.btnIdempotent_Click);
+            // 
+            // lblSqlTarget
+            // 
+            this.lblSqlTarget.AutoSize = true;
+            this.lblSqlTarget.Location = new System.Drawing.Point(571, 20);
+            this.lblSqlTarget.Name = "lblSqlTarget";
+            this.lblSqlTarget.Size = new System.Drawing.Size(86, 17);
+            this.lblSqlTarget.TabIndex = 20;
+            this.lblSqlTarget.Text = "SQL Target:";
+            // 
+            // cmbSqlTarget
+            // 
+            this.cmbSqlTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSqlTarget.FormattingEnabled = true;
+            this.cmbSqlTarget.Location = new System.Drawing.Point(663, 16);
+            this.cmbSqlTarget.Name = "cmbSqlTarget";
+            this.cmbSqlTarget.Size = new System.Drawing.Size(93, 24);
+            this.cmbSqlTarget.TabIndex = 21;
+            this.cmbSqlTarget.SelectedIndexChanged += new System.EventHandler(this.cmbSqlTarget_SelectedIndexChanged);
+            // 
             // DatabaseMigrator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(997, 528);
+            this.ClientSize = new System.Drawing.Size(1329, 650);
+            this.Controls.Add(this.cmbSqlTarget);
+            this.Controls.Add(this.lblSqlTarget);
+            this.Controls.Add(this.btnIdempotent);
             this.Controls.Add(this.btnReseed);
             this.Controls.Add(this.btnClearLog);
             this.Controls.Add(this.btnRollbackAllSql);
@@ -235,6 +289,7 @@
             this.Controls.Add(this.lbPending);
             this.Controls.Add(this.lbCompleted);
             this.Controls.Add(this.lblCompleted);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DatabaseMigrator";
             this.Text = "Database Migrator";
             this.ResumeLayout(false);
@@ -261,6 +316,9 @@
         private System.Windows.Forms.Button btnRollbackAllSql;
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.Button btnReseed;
+        private System.Windows.Forms.Button btnIdempotent;
+        private System.Windows.Forms.Label lblSqlTarget;
+        private System.Windows.Forms.ComboBox cmbSqlTarget;
     }
 }
 

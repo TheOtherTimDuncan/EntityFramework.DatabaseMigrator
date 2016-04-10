@@ -20,6 +20,7 @@ namespace EntityFramework.DatabaseMigrator
         public event MigrationChangedEventHandler PendingMigrationChanged;
         public event MigrationChangedEventHandler CompletedMigrationChanged;
         public event DbMigratorEventHandler MigrationCompleted;
+        public event SqlTargetEventHandler SqlTargetChanged;
 
         public BaseDatabaseMigrator()
         {
@@ -92,6 +93,14 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
+        public virtual void OnSqlTargetChanged(SqlTargetEventArgs e)
+        {
+            if (SqlTargetChanged != null)
+            {
+                SqlTargetChanged(this, e);
+            }
+        }
+
         protected virtual void LoadMigrators()
         {
             Logger = new Logger(LoggerTextBox);
@@ -135,6 +144,13 @@ namespace EntityFramework.DatabaseMigrator
         {
             MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
             string sql = loggingScripter.ScriptUpdate(null, migrationName);
+            return sql;
+        }
+
+        protected string GetIdempotentMigrationSql(DbMigrationsConfiguration migrationConfiguration)
+        {
+            MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
+            string sql = loggingScripter.ScriptUpdate("0", null);
             return sql;
         }
 
