@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtLog = new System.Windows.Forms.TextBox();
+            this.txtConsole = new System.Windows.Forms.TextBox();
             this.lblTarget = new System.Windows.Forms.Label();
             this.lblMigrationTarget = new System.Windows.Forms.Label();
             this.cmbMigrationTarget = new System.Windows.Forms.ComboBox();
@@ -43,25 +43,26 @@
             this.btnMigrationHistory = new System.Windows.Forms.Button();
             this.btnRollbackAll = new System.Windows.Forms.Button();
             this.btnRollbackAllSql = new System.Windows.Forms.Button();
-            this.btnClearLog = new System.Windows.Forms.Button();
+            this.btnClearConsole = new System.Windows.Forms.Button();
             this.btnReseed = new System.Windows.Forms.Button();
             this.btnIdempotent = new System.Windows.Forms.Button();
             this.lblSqlTarget = new System.Windows.Forms.Label();
             this.cmbSqlTarget = new System.Windows.Forms.ComboBox();
+            this.lblConsole = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // txtLog
+            // txtConsole
             // 
-            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLog.Location = new System.Drawing.Point(16, 309);
-            this.txtLog.Margin = new System.Windows.Forms.Padding(4);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1296, 325);
-            this.txtLog.TabIndex = 0;
+            this.txtConsole.Location = new System.Drawing.Point(16, 349);
+            this.txtConsole.Margin = new System.Windows.Forms.Padding(4);
+            this.txtConsole.Multiline = true;
+            this.txtConsole.Name = "txtConsole";
+            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtConsole.Size = new System.Drawing.Size(1296, 285);
+            this.txtConsole.TabIndex = 0;
             // 
             // lblTarget
             // 
@@ -213,16 +214,16 @@
             this.btnRollbackAllSql.UseVisualStyleBackColor = true;
             this.btnRollbackAllSql.Click += new System.EventHandler(this.btnRollbackAllSql_Click);
             // 
-            // btnClearLog
+            // btnClearConsole
             // 
-            this.btnClearLog.Location = new System.Drawing.Point(1212, 273);
-            this.btnClearLog.Margin = new System.Windows.Forms.Padding(4);
-            this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(100, 28);
-            this.btnClearLog.TabIndex = 17;
-            this.btnClearLog.Text = "Clear Log";
-            this.btnClearLog.UseVisualStyleBackColor = true;
-            this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
+            this.btnClearConsole.Location = new System.Drawing.Point(82, 313);
+            this.btnClearConsole.Margin = new System.Windows.Forms.Padding(4);
+            this.btnClearConsole.Name = "btnClearConsole";
+            this.btnClearConsole.Size = new System.Drawing.Size(100, 28);
+            this.btnClearConsole.TabIndex = 17;
+            this.btnClearConsole.Text = "Clear";
+            this.btnClearConsole.UseVisualStyleBackColor = true;
+            this.btnClearConsole.Click += new System.EventHandler(this.btnClearConsole_Click);
             // 
             // btnReseed
             // 
@@ -264,16 +265,26 @@
             this.cmbSqlTarget.TabIndex = 21;
             this.cmbSqlTarget.SelectedIndexChanged += new System.EventHandler(this.cmbSqlTarget_SelectedIndexChanged);
             // 
+            // lblConsole
+            // 
+            this.lblConsole.AutoSize = true;
+            this.lblConsole.Location = new System.Drawing.Point(12, 319);
+            this.lblConsole.Name = "lblConsole";
+            this.lblConsole.Size = new System.Drawing.Size(63, 17);
+            this.lblConsole.TabIndex = 22;
+            this.lblConsole.Text = "Console:";
+            // 
             // DatabaseMigrator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1329, 650);
+            this.Controls.Add(this.lblConsole);
             this.Controls.Add(this.cmbSqlTarget);
             this.Controls.Add(this.lblSqlTarget);
             this.Controls.Add(this.btnIdempotent);
             this.Controls.Add(this.btnReseed);
-            this.Controls.Add(this.btnClearLog);
+            this.Controls.Add(this.btnClearConsole);
             this.Controls.Add(this.btnRollbackAllSql);
             this.Controls.Add(this.btnRollbackAll);
             this.Controls.Add(this.btnMigrationHistory);
@@ -285,7 +296,7 @@
             this.Controls.Add(this.cmbMigrationTarget);
             this.Controls.Add(this.lblMigrationTarget);
             this.Controls.Add(this.lblTarget);
-            this.Controls.Add(this.txtLog);
+            this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.lbPending);
             this.Controls.Add(this.lbCompleted);
             this.Controls.Add(this.lblCompleted);
@@ -299,7 +310,7 @@
 
         #endregion
     
-        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.TextBox txtConsole;
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.Label lblMigrationTarget;
         private System.Windows.Forms.ComboBox cmbMigrationTarget;
@@ -314,11 +325,12 @@
         private System.Windows.Forms.Button btnMigrationHistory;
         private System.Windows.Forms.Button btnRollbackAll;
         private System.Windows.Forms.Button btnRollbackAllSql;
-        private System.Windows.Forms.Button btnClearLog;
+        private System.Windows.Forms.Button btnClearConsole;
         private System.Windows.Forms.Button btnReseed;
         private System.Windows.Forms.Button btnIdempotent;
         private System.Windows.Forms.Label lblSqlTarget;
         private System.Windows.Forms.ComboBox cmbSqlTarget;
+        private System.Windows.Forms.Label lblConsole;
     }
 }
 

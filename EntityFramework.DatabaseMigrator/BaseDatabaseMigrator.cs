@@ -150,7 +150,7 @@ namespace EntityFramework.DatabaseMigrator
         protected string GetIdempotentMigrationSql(DbMigrationsConfiguration migrationConfiguration)
         {
             MigratorScriptingDecorator loggingScripter = new MigratorScriptingDecorator(CreateLoggingMigrator(migrationConfiguration));
-            string sql = loggingScripter.ScriptUpdate("0", null);
+            string sql = loggingScripter.ScriptUpdate(DbMigrator.InitialDatabase, null);
             return sql;
         }
 

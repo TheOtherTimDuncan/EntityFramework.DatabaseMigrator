@@ -23,7 +23,7 @@ namespace EntityFramework.DatabaseMigrator
         {
             InitializeComponent();
 
-            LoggerTextBox = txtLog;
+            LoggerTextBox = txtConsole;
 
             MigrationTargetChanged += DatabaseMigrator_MigrationTargetChanged;
             MigrationCompleted += DatabaseMigrator_MigrationCompleted;
@@ -171,9 +171,9 @@ namespace EntityFramework.DatabaseMigrator
             }
         }
 
-        private void btnClearLog_Click(object sender, EventArgs e)
+        private void btnClearConsole_Click(object sender, EventArgs e)
         {
-            txtLog.Text = "";
+            txtConsole.Text = "";
         }
 
         private void btnReseed_Click(object sender, EventArgs e)
