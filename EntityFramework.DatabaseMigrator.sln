@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.DatabaseMigrator", "EntityFramework.DatabaseMigrator\EntityFramework.DatabaseMigrator.csproj", "{3D9D955E-80B3-4A1E-B83A-FF176809CDEB}"
 EndProject
@@ -10,6 +10,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{39135FF0-A37E-4E0D-978C-3FA6DE233451}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{7A48DFF4-EE21-459A-8BF0-B91980F9DD1C}"
+	ProjectSection(SolutionItems) = preProject
+		License.txt = License.txt
+		PublishPackage.bat = PublishPackage.bat
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Global

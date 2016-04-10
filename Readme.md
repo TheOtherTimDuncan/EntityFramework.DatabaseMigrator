@@ -19,7 +19,7 @@ Assuming you already have migrations enabled,
 3. Open `program.cs` in the root of your project and change Form1 to EntityFramework.DatabaseMigrator.DatabaseMigrator
 
     ```csharp
-    	 static class Program
+        static class Program
         {
             /// <summary>
             /// The main entry point for the application.
